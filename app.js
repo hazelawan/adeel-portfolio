@@ -9,20 +9,17 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.conta
 matchMedia('(min-width:701px)').addEventListener('change',e=>{if(e.matches)closeMenu();});
 const words=['websites.','web apps.','online stores.','AI videos.'],word=$('#word'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
 let wi=0,index=words[0].length,deleting=true;
-function type(){if(reduce.matches){word.textContent='websites.';return;}const text=words[wi];if(deleting){index--;word.textContent=text.slice(0,index);if(index===0){deleting=false;wi=(wi+1)%words.length;setTimeout(type,280);return;}}else{index++;word.textContent=text.slice(0,index);if(index===words[wi].length){deleting=true;setTimeout(type,2500);return;}}setTimeout(type,deleting?45:90);}
+function type(){if(window.portfolioCustomHeadline)return;if(reduce.matches){word.textContent='websites.';return;}const text=words[wi];if(deleting){index--;word.textContent=text.slice(0,index);if(index===0){deleting=false;wi=(wi+1)%words.length;setTimeout(type,280);return;}}else{index++;word.textContent=text.slice(0,index);if(index===words[wi].length){deleting=true;setTimeout(type,2500);return;}}setTimeout(type,deleting?45:90);}
 if(!reduce.matches)setTimeout(type,3000);
 function clock(){$('#clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Karachi',hour:'2-digit',minute:'2-digit'});}clock();setInterval(clock,30000);$('#year').textContent=new Date().getFullYear();
-const serviceRows=[...document.querySelectorAll('.service')];
-function selectService(row){serviceRows.forEach(r=>{const on=r===row;r.classList.toggle('selected',on);r.setAttribute('aria-expanded',String(on));});}
+function selectService(row){document.querySelectorAll('.service').forEach(r=>{const on=r===row;r.classList.toggle('selected',on);r.setAttribute('aria-expanded',String(on));});}
 if(matchMedia('(max-width:700px)').matches)selectService(null);
-serviceRows.forEach(row=>{
- row.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&matchMedia('(min-width:701px)').matches)selectService(row);});
- row.addEventListener('focus',()=>{if(row.matches(':focus-visible'))selectService(row);});
- row.addEventListener('click',()=>{const mobile=matchMedia('(max-width:700px)').matches;selectService(mobile&&row.classList.contains('selected')?null:row);});
-});
+document.addEventListener('pointerover',e=>{const row=e.target.closest('.service');if(row&&e.pointerType==='mouse'&&matchMedia('(min-width:701px)').matches)selectService(row);});
+document.addEventListener('focusin',e=>{const row=e.target.closest('.service');if(row&&row.matches(':focus-visible'))selectService(row);});
+document.addEventListener('click',e=>{const row=e.target.closest('.service');if(row){const mobile=matchMedia('(max-width:700px)').matches;selectService(mobile&&row.classList.contains('selected')?null:row);}});
 const dialog=$('#preview'),video=$('#preview-video');let returnFocus=null;
 function showPreview(src,title,intro=false){returnFocus=document.activeElement;$('#preview-title').textContent=title;$('#preview-note').textContent=intro?'Adeel Younas · Original animated introduction':'Project showcase · Adeel Younas / Wanhar Tech';dialog.classList.toggle('intro-dialog',intro);video.src=src;video.muted=false;video.loop=false;dialog.showModal();document.body.classList.add('modal-open');video.play().catch(()=>{});}
-document.querySelectorAll('[data-video]').forEach(button=>button.addEventListener('click',()=>showPreview(button.dataset.video,button.dataset.title)));
+document.addEventListener('click',e=>{const button=e.target.closest('[data-video]');if(button&&button.dataset.video)showPreview(button.dataset.video,button.dataset.title);});
 const avatar=$('#avatar'),sound=$('#sound'),introduce=$('#introduce');
 function setSound(on,restart=false){if(restart)avatar.currentTime=0;avatar.muted=!on;avatar.loop=!on;sound.innerHTML=on?'Sound on <span aria-hidden="true">◉</span>':'Sound off <span aria-hidden="true">◌</span>';sound.setAttribute('aria-label',on?'Mute introduction':'Turn introduction sound on');introduce.querySelector('span:last-child').textContent=on?'Introducing…':'Introduce';avatar.play().catch(()=>{});}
 introduce.addEventListener('click',()=>setSound(true,true));sound.addEventListener('click',()=>setSound(avatar.muted));avatar.addEventListener('ended',()=>setSound(false,true));

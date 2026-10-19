@@ -1,0 +1,7 @@
+.env
+.env.*
+*.private
+*.pem
+__pycache__/
+*.py[cod]
+appwrite-config.json.tmp

@@ -1,0 +1,9 @@
+{
+  "endpoint": "https://sgp.cloud.appwrite.io/v1",
+  "projectId": "6ad678850018d7fa477c",
+  "databaseId": "portfolio",
+  "contentCollectionId": "content",
+  "messagesCollectionId": "messages",
+  "bucketId": "portfolio_media",
+  "enabled": true
+}

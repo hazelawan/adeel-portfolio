@@ -1,0 +1,94 @@
+{
+  "owner": {
+    "name": "Adeel Younas",
+    "brand": "Wanhar Tech",
+    "monogram": "AY",
+    "role": "FOUNDER · WANHAR TECH",
+    "title": "Adeel Younas — Creative Developer · Wanhar Tech",
+    "metaDescription": "Adeel Younas, founder of Wanhar Tech. Modern websites, purposeful apps, AI engineering and creative content. Based in Kallar Kahar, Pakistan."
+  },
+  "hero": {
+    "availability": "Available for new projects",
+    "eyebrow": "WEB DEVELOPER · AI ENGINEER · WANHAR TECH",
+    "headline": "I create\namazing\nwebsites.",
+    "intro": "Fast, beautiful websites, apps and content with clean code and motion that feels natural, from the first sketch to launch day.",
+    "location": "Kallar Kahar, Pakistan",
+    "portraitVideo": "assets/avatar-cutout.webm",
+    "portraitPoster": "assets/avatar-cutout.png",
+    "background": "assets/hero-background.webp",
+    "backgroundAlt": "Adeel Younas and Wanhar Tech dark creative studio",
+    "portraitAlt": "Adeel Younas original animated avatar",
+    "actions": {
+      "introduce": "Introduce",
+      "primary": "See my work",
+      "secondary": "Start a project"
+    },
+    "note": "THOUGHTFUL CODE. PURPOSEFUL DESIGN.\nFrom a small idea to something amazing."
+  },
+  "ticker": ["WEBSITE DEVELOPMENT", "APP DEVELOPMENT", "AI ENGINEERING", "E-COMMERCE", "UI/UX DESIGN"],
+  "sections": {
+    "services": {
+      "eyebrow": "01 / WHAT I DO",
+      "heading": "Solutions for your\ndigital growth.",
+      "copy": "Websites, apps, AI engineering and creative content. Built around your next idea.",
+      "action": "Let's build your idea"
+    },
+    "projects": {
+      "eyebrow": "02 / SELECTED WORK",
+      "heading": "Recent projects.",
+      "copy": "A few ideas I've brought to life. Designed with purpose, built with care.",
+      "action": "Have a project in mind?"
+    },
+    "about": {
+      "eyebrow": "03 / A LITTLE ABOUT ME",
+      "heading": "The builder\nbehind the work.",
+      "text": "I'm Adeel Younas, founder of Wanhar Tech. I turn ideas into websites, apps, AI-powered tools and creative content that feel good to use.",
+      "subcopy": "Based in Kallar Kahar, Pakistan. Working from the first sketch to launch day, with clean code, considered design and attention to the little things.",
+      "action": "Let's build something together"
+    },
+    "process": {
+      "eyebrow": "04 / HOW WE WORK",
+      "heading": "A simple & clear process.",
+      "copy": "A shared vision. Clear communication. Something we're both proud of."
+    },
+    "contact": {
+      "eyebrow": "LET'S BUILD SOMETHING TOGETHER",
+      "heading": "Have a\nproject in mind?",
+      "copy": "Tell me about your next big idea.\nI'd love to help you bring it to life.",
+      "whatsappLabel": "Let's talk on WhatsApp",
+      "workLinkLabel": "View my work"
+    }
+  },
+  "services": [
+    {"title": "Website Development", "description": "Custom, modern websites. Fast, responsive and built around your brand.", "image": "assets/preview-website.webp"},
+    {"title": "Custom Software Development", "description": "Purpose-built tools, dashboards and backends that simplify your work.", "image": "assets/service-app.webp"},
+    {"title": "App Development", "description": "Thoughtful mobile and web apps, from your first idea to launch.", "image": "assets/preview-app.webp"},
+    {"title": "Video Editing", "description": "Clean edits, natural pacing and polished stories for your business.", "image": "assets/product-ads.jpg"},
+    {"title": "AI Video Ads", "description": "Creative product ads that bring your products into the spotlight.", "image": "assets/service-ads.webp"},
+    {"title": "AI Video Creation", "description": "From an idea to a visual story, with AI-assisted scenes, motion and sound.", "image": "assets/preview-video.webp"},
+    {"title": "Prompt Engineering", "description": "Clear, structured prompts that help AI produce more useful, consistent results.", "image": "assets/preview-prompt.webp"},
+    {"title": "AI Engineering", "description": "AI-powered features, integrations and practical automation for your business.", "image": "assets/preview-ai.webp"},
+    {"title": "E-commerce Stores", "description": "Beautiful storefronts, simple shopping and connected order flows.", "image": "assets/herbs-screen.jpg"},
+    {"title": "UI/UX & Interactive Design", "description": "Clear interfaces, considered details and experiences that feel effortless.", "image": "assets/wanhar-screen.jpg"}
+  ],
+  "projects": [
+    {"title": "Wanhar Mart", "tag": "MARKETPLACE · MOBILE APP", "description": "A connected marketplace for customers, shops and riders, with a simple shopping experience.", "image": "assets/wanhar-screen.jpg", "video": "assets/wanhar.mp4", "url": null, "mediaClass": "app-shot warm"},
+    {"title": "SpeakUp", "tag": "EDTECH · LANGUAGE LEARNING", "description": "Making language learning more accessible for Urdu speakers through interactive lessons.", "image": "assets/speakup-screen.jpg", "video": "assets/speakup.mp4", "url": "https://hazelawan.github.io/Speakup/", "mediaClass": "app-shot purple"},
+    {"title": "Al Awan Herbs", "tag": "E-COMMERCE · ONLINE STORE", "description": "A complete online storefront for natural herbal products, from browsing to ordering.", "image": "assets/herbs-screen.jpg", "video": "assets/herbs.mp4", "url": null, "mediaClass": "website-shot green"},
+    {"title": "Product Ad Videos", "tag": "CREATIVE · VIDEO CONTENT", "description": "Product-led stories with thoughtful editing, motion and sound, created to catch attention.", "image": "assets/product-ads.jpg", "video": "assets/service-ads.mp4", "url": null, "mediaClass": "website-shot dark"}
+  ],
+  "processSteps": [
+    {"number": "01", "title": "Discuss your idea.", "description": "We talk about your goals, your audience and what you want to bring to life."},
+    {"number": "02", "title": "Plan & design.", "description": "We shape the details together, so you know exactly what we're building."},
+    {"number": "03", "title": "Build. Polish. Launch.", "description": "I develop the experience, test the details and get your project ready for the world."}
+  ],
+  "contact": {
+    "phone": "+923410101415",
+    "whatsappUrl": "https://wa.me/923410101415",
+    "email": "adeelmakhial@gmail.com"
+  },
+  "footer": {
+    "copyright": "© 2026 Adeel Younas. Built with care.",
+    "brandSubline": "WANHAR TECH"
+  }
+}
