@@ -24,3 +24,30 @@ button.service:last-child{border-bottom:1px solid var(--line)}
 .service:not(.selected)>.service-image{opacity:0;visibility:hidden}.service>.service-image{transition:opacity .18s,transform .25s}.service.selected{z-index:2}
 @media(min-width:1101px){.avatar-stage{height:min(650px,calc(100% - 155px))}}
 @media(min-width:701px) and (max-width:850px){.avatar-stage{right:5%}}
+
+/* Closing project invitation: existing Adeel Younas / Wanhar Tech identity. */
+.contact.section{padding:76px 7.4% 86px;background:var(--bg);text-align:left}
+.project-cta{max-width:1120px;margin:auto;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:0;padding:10px;overflow:hidden;border:1px solid #f6d67b;border-radius:22px;background:linear-gradient(115deg,var(--gold),#f3d47b);color:#171911;box-shadow:0 20px 70px #0003}
+.project-cta-portrait{position:relative;min-height:370px;overflow:hidden;border-radius:14px;background:radial-gradient(ellipse at 50% 65%,#e8bd5226,transparent 65%),linear-gradient(145deg,#1d2226,#090c0f);isolation:isolate}
+.project-cta-portrait::before{content:"";position:absolute;inset:20px;border:1px solid #e8bd5226;border-radius:8px;z-index:-1}
+.project-cta-portrait>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 10px 22px #0006)}
+.project-cta-mark{position:absolute;left:24px;top:23px;z-index:1;display:flex;align-items:center;gap:10px;font-size:15px;letter-spacing:-.5px;color:var(--gold);font-weight:700}
+.project-cta-mark>span{font-size:7px;letter-spacing:1.7px;font-weight:400;color:#e3dfca}
+.project-cta-signature{position:absolute;left:0;right:0;bottom:0;padding:44px 24px 22px;background:linear-gradient(transparent,#090c0fee);color:var(--fg)}
+.project-cta-signature strong{display:block;font-size:18px;font-weight:600;letter-spacing:-.4px}
+.project-cta-signature>span{display:block;margin-top:7px;font-size:7px;letter-spacing:1.8px;color:var(--gold)}
+.project-cta-copy{align-self:center;padding:38px 42px}
+.project-cta-copy .eyebrow{color:#51431e;font-size:8px;letter-spacing:1.9px;margin-bottom:19px}
+.contact .project-cta-copy h2{font-size:clamp(40px,4.5vw,64px);line-height:1.02;letter-spacing:-2.4px;margin:0;max-width:none}
+.project-cta-copy h2 em{color:inherit;white-space:nowrap}
+.contact .project-cta-copy .subcopy{color:#4c432c;font-size:12px;line-height:1.8;margin:20px 0 24px}
+.project-cta-copy .contact-actions{justify-content:flex-start;align-items:center;gap:22px}
+.project-cta-primary{background:var(--bg);color:var(--fg);border:1px solid var(--bg);gap:16px;min-height:46px}
+.project-cta-primary:hover{background:#2b2e27;transform:translateY(-2px)}
+.project-cta-work{display:inline-flex;align-items:center;gap:15px;min-height:44px;font-size:10px;font-weight:600}
+.project-cta-work:hover{text-decoration:underline;text-underline-offset:5px}
+.project-cta-email{display:inline-flex;align-items:center;gap:15px;margin-top:18px;font-size:10px;min-height:30px;color:#4c432c;border-bottom:1px solid #51431e40}
+.project-cta-email:hover{color:#171911;border-bottom-color:currentColor}
+.project-cta a:focus-visible{outline-color:#171911;outline-offset:4px}
+@media(min-width:701px) and (max-width:1100px){.contact.section{padding:65px 6% 75px}.project-cta-copy{padding:28px}.contact .project-cta-copy h2{font-size:48px}.project-cta-copy .contact-actions{gap:10px 18px}.project-cta-portrait{min-height:360px}}
+@media(max-width:700px){.contact.section{padding:52px 6% 60px}.project-cta{grid-template-columns:1fr;padding:8px;border-radius:18px;max-width:470px}.project-cta-portrait{min-height:0;height:290px;border-radius:11px}.project-cta-portrait>img{object-position:center 18%;object-fit:cover;width:200px;left:50%;transform:translateX(-50%);height:auto;max-width:none}.project-cta-mark{left:19px;top:20px}.project-cta-signature{padding:40px 20px 19px}.project-cta-copy{padding:29px 20px 25px}.project-cta-copy .eyebrow{font-size:7px;letter-spacing:1.4px;margin-bottom:17px}.contact .project-cta-copy h2{font-size:clamp(38px,10.4vw,50px);letter-spacing:-1.6px;max-width:none}.contact .project-cta-copy .subcopy{font-size:12px;margin:18px 0 20px}.project-cta-copy .contact-actions{gap:10px 20px}.project-cta-work{font-size:11px}.project-cta-email{font-size:11px;margin-top:13px;min-height:38px}}
