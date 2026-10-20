@@ -64,3 +64,13 @@ The verified example is live at https://hazelawan.github.io/adeel-portfolio/site
 Open https://hazelawan.github.io/adeel-portfolio/admin.html and choose **Sites**. Duplicate **Adeel Portfolio template**, choose a new name/slug, edit **site-content.json** through **Edit site content**, save and publish. Published copies are immutable: duplicate them for another version. ZIP export retains all files and nested assets.
 
 1HourMart, original Appwrite content/media/inbox configuration, and the original public portfolio files were not changed. Only the admin integration, new multi-site implementation/configuration, documentation/tests and the new verification-site folder are added or updated on `main` as part of rollout. No token is stored in GitHub files, browser code or response logs.
+
+## Site-first admin flow
+
+The admin now opens on Sites. The original **Adeel Portfolio** has its own clearly marked live card. **Open files & details** opens its original static files (read-only), live URL and shortcuts to the existing original-only content/projects/services/media/inbox editor. Original static files are pinned to the last pre-manager-change root snapshot (`240fba4`) so the read-only view cannot drift during a download; original content itself is unchanged.
+
+**Upload new website** accepts a complete built folder or individual files and previews the selected paths. A unique name/slug creates a new draft, then opens its files. Edit/add/replace draft files and choose **Publish new website** to create `sites/<slug>/` in this same repository. Uploading alone does not publish.
+
+**Duplicate** on the original uses the existing standalone portfolio-copy operation, including local content and assets. Duplicate on another site creates its own independent draft. Each copy appears in the site list. New copies use unused slugs; original and existing published folders remain protected from overwrite. No demo copy is created automatically.
+
+Published sites remain immutable; duplicate to a new slug for changes. Arbitrary uploaded sites use the file editor; portfolio copies also have guided details through `site-content.json`.

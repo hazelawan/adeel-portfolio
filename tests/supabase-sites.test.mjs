@@ -6,6 +6,39 @@ import { stripTypeScriptTypes } from 'node:module';
 const edge = await readFile(new URL('../supabase/functions/site-manager/index.ts', import.meta.url), 'utf8');
 const migration = await readFile(new URL('../supabase/migrations/202610200001_sites.sql', import.meta.url), 'utf8');
 
+test('original portfolio is a pinned synthetic read-only view with a strict static-file allowlist', () => {
+  assert.match(edge, /ORIGINAL_COMMIT = "240fba4b902db61f41354e81f99c0a55f7a175f1"/);
+  assert.match(edge, /case "originalPortfolio"/); assert.match(edge, /\$id: "original-portfolio", kind: "original", name: "Adeel Portfolio"/);
+  assert.match(edge, /case "getOriginalFile"/); assert.match(edge, /ORIGINAL_FILE_PATH\(body\.path\)/);
+  assert.match(edge, /\["list", "createDraft", "duplicate", "refresh"\]/);
+  assert.match(edge, /ORIGINAL_ROOT_FILES = new Set\(\["index\.html", "app\.js", "style\.css", "content\.js", "content-defaults\.json", "contact-form\.css", "appwrite-client\.js", "appwrite-config\.json"\]\)/);
+  assert.doesNotMatch(edge, /case "originalPortfolio"[\s\S]{0,1000}save\(/);
+});
+test('original portfolio actions return pinned file metadata and read only allowlisted blobs', async () => {
+  const calls = [];
+  const handler = await makeHandler(async (url) => {
+    url = String(url); calls.push(url);
+    if (url.endsWith('/account')) return json({ labels: ['portfolioAdmin'] });
+    if (url.endsWith('/git/trees/240fba4b902db61f41354e81f99c0a55f7a175f1?recursive=1')) return json({ tree: [
+      { path: 'index.html', type: 'blob', mode: '100644', sha: 'a'.repeat(40), size: 27 },
+      { path: 'assets/hero.webp', type: 'blob', mode: '100644', sha: 'b'.repeat(40), size: 12 },
+      { path: 'admin.html', type: 'blob', mode: '100644', sha: 'c'.repeat(40), size: 1 },
+      { path: 'assets/hidden', type: 'tree', mode: '040000' },
+    ] });
+    if (url.endsWith('/git/blobs/' + 'a'.repeat(40))) return json({ content: Buffer.from('<h1>original</h1>').toString('base64') });
+    throw Error('unexpected ' + url);
+  });
+  const siteResponse = await handler(new Request('https://edge.test', { method: 'POST', body: JSON.stringify({ jwt: 'valid', action: 'originalPortfolio' }) }));
+  assert.equal(siteResponse.status, 200); const site = (await siteResponse.json()).site;
+  assert.equal(site.$id, 'original-portfolio'); assert.equal(site.kind, 'original'); assert.equal(site.repoPath, '');
+  assert.equal(site.commit, '240fba4b902db61f41354e81f99c0a55f7a175f1'); assert.deepEqual(site.files.map(f => f.path), ['index.html', 'assets/hero.webp']);
+  const fileResponse = await handler(new Request('https://edge.test', { method: 'POST', body: JSON.stringify({ jwt: 'valid', action: 'getOriginalFile', path: 'index.html' }) }));
+  assert.equal(fileResponse.status, 200); assert.equal((await fileResponse.json()).content, Buffer.from('<h1>original</h1>').toString('base64'));
+  const denied = await handler(new Request('https://edge.test', { method: 'POST', body: JSON.stringify({ jwt: 'valid', action: 'getOriginalFile', path: 'sites/private/index.html' }) }));
+  assert.equal(denied.status, 404); assert.equal(calls.some(url => url.includes('/rest/v1/')), false);
+  assert.equal(calls.some(url => url.includes('/git/blobs') && !url.endsWith('/git/blobs/' + 'a'.repeat(40))), false);
+});
+
 test('catalog tables enforce unique slugs and restrict direct client access', () => {
   assert.match(migration, /slug text not null unique/i); assert.match(migration, /enable row level security/i);
   assert.match(migration, /revoke all on table public\.sites from (?:public, )?anon, authenticated/i);

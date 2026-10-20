@@ -6,6 +6,9 @@ const PROJECT = "6ad678850018d7fa477c";
 const REPO = "hazelawan/adeel-portfolio";
 const BRANCH = "main";
 const GH = `https://api.github.com/repos/${REPO}`;
+const ORIGINAL_COMMIT = "240fba4b902db61f41354e81f99c0a55f7a175f1";
+const ORIGINAL_ROOT_FILES = new Set(["index.html", "app.js", "style.css", "content.js", "content-defaults.json", "contact-form.css", "appwrite-client.js", "appwrite-config.json"]);
+const ORIGINAL_FILE_PATH = (p: string) => ORIGINAL_ROOT_FILES.has(p) || p === "vendor/appwrite.js" || p === "vendor/appwrite-LICENSE" || p.startsWith("assets/");
 const LIMIT = { files: 150, file: 2 * 1024 * 1024, total: 40 * 1024 * 1024, manifest: 65000 };
 const enc = encodeURIComponent;
 type F = { path: string; size: number; mime: string; sha: string };
@@ -39,6 +42,7 @@ function b64(s: unknown): Uint8Array {
   return Uint8Array.from(raw, c => c.charCodeAt(0));
 }
 function fingerprint(files: F[]) { return createHash("sha256").update(JSON.stringify([...files].map(f => ({ path: f.path, size: f.size, mime: f.mime, sha: f.sha || "" })).sort((a,b) => a.path.localeCompare(b.path)))).digest("hex"); }
+function originalMime(p: string): string { const ext = p.split(".").pop()!.toLowerCase(); return ({ html: "text/html", js: "text/javascript", css: "text/css", json: "application/json", svg: "image/svg+xml", png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", gif: "image/gif", mp4: "video/mp4", webm: "video/webm", license: "text/plain" } as Record<string, string>)[ext] || "application/octet-stream"; }
 function publicSite(s: Site) { const { updated_at: _u, ...out } = s; return out; }
 function validateSite(s: Site): Site {
   if (!s || s.version !== 2 || typeof s.name !== "string" || !s.name.trim() || s.name.length > 160) fail("Invalid site metadata", 500);
@@ -184,11 +188,28 @@ Deno.serve(async req => {
       catch { const reread = await assertAvailable(current); if (!reread.recovered) fail("Publication outcome is unknown; refresh status before retrying", 409); }
       const fresh = await get(id); return publicSite(await save({ ...fresh, commit: commit.sha }, false, fresh.updated_at));
     }
+    async function originalTree() {
+      const tree = await gh(`/git/trees/${ORIGINAL_COMMIT}?recursive=1`);
+      if (tree.truncated || !Array.isArray(tree.tree)) fail("Original portfolio tree unavailable", 502);
+      return tree.tree.filter((e: any) => e.type === "blob" && ORIGINAL_FILE_PATH(e.path) && ["100644", "100755"].includes(e.mode)).map((e: any) => ({ path: e.path, sha: e.sha, size: e.size, mime: originalMime(e.path) }));
+    }
     const action = body.action; let result: any;
     if (action === "configurePublisher") { result = await configurePublisher(body.githubToken); return json({ ok: true, ...result }); }
     if (!["list", "createDraft", "duplicate", "refresh"].includes(action)) await loadPublisher();
     switch (action) {
       case "list": result = await list(); break;
+      case "originalPortfolio": {
+        const files = await originalTree();
+        if (!files.some((f: F) => f.path === "index.html")) fail("Original portfolio root index missing", 502);
+        result = { site: { $id: "original-portfolio", kind: "original", name: "Adeel Portfolio", slug: "original-portfolio", repoPath: "", publishedUrl: "https://hazelawan.github.io/adeel-portfolio/", status: "published", files, commit: ORIGINAL_COMMIT } }; break;
+      }
+      case "getOriginalFile": {
+        if (typeof body.path !== "string" || !ORIGINAL_FILE_PATH(body.path)) fail("Original file is not available", 404);
+        const files = await originalTree(), file = files.find((f: F) => f.path === body.path);
+        if (!file) fail("Original file is not available", 404);
+        const blob = await gh(`/git/blobs/${file.sha}`);
+        result = { path: file.path, mime: file.mime, sha: file.sha, commit: ORIGINAL_COMMIT, content: blob.content.replace(/\n/g, "") }; break;
+      }
       case "createDraft": {
         const s = slug(body.slug); if (!Array.isArray(body.files)) fail("Invalid file list"); if (typeof body.name !== "string" || !body.name.trim() || body.name.length > 160) fail("Invalid site name"); const files = body.files.map((f: any) => ({ path: path(f.path), size: f.size, mime: f.mime, sha: "" })); validateFiles(files); await unique(s);
         const id = randomUUID(); result = { site: publicSite(await save({ $id: id, version: 2, name: body.name.trim(), slug: s, status: "draft", files, repoPath: `sites/${s}`, commit: "", publishedUrl: "", error: "", publicationId: randomUUID() }, true)) }; break;
