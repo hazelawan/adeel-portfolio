@@ -14,6 +14,22 @@ test('publisher secrets are encrypted and atomically upserted', () => {
   assert.match(edge, /createCipheriv\("aes-256-gcm"/); assert.match(edge, /import \{ Buffer \} from "node:buffer"/);
   assert.match(edge, /on_conflict=id/); assert.doesNotMatch(edge, /site_manager_secrets\?.*DELETE/);
 });
+test('publisher verifies actual token blob-write grant before storing credentials', async () => {
+  for (const canWrite of [false, true]) {
+    let stored = false, probed = false;
+    const handler = await makeHandler(async (url, init={}) => {
+      url=String(url);
+      if(url.endsWith('/account')) return json({labels:['portfolioAdmin']});
+      if(url.endsWith('/repos/hazelawan/adeel-portfolio')) return json({permissions:{push:true}});
+      if(url.endsWith('/git/blobs')) { probed=true; return canWrite ? json({sha:'a'.repeat(40)},201) : json({message:'Resource not accessible by personal access token'},403); }
+      if(url.includes('/site_manager_secrets?on_conflict=id')) { stored=true; const record=JSON.parse(init.body); assert.ok(record.ciphertext && record.iv && record.tag); assert.ok(!JSON.stringify(record).includes('candidate-token')); return json({}); }
+      throw Error('unexpected '+url);
+    });
+    const response=await handler(new Request('https://edge.test',{method:'POST',body:JSON.stringify({jwt:'valid',action:'configurePublisher',githubToken:'candidate-token-with-enough-length'})}));
+    assert.equal(response.status,canWrite?200:403); assert.equal(probed,true); assert.equal(stored,canWrite);
+    assert.ok(!(await response.text()).includes('candidate-token'));
+  }
+});
 test('actual handler denies missing identity and non-admin before any database access', async () => {
   for (const { body, expected } of [{ body:{action:'list'}, expected:401 }, {body:{action:'list',jwt:'valid'},expected:403}]) {
     const calls=[]; const handler=await makeHandler(async (url)=>{calls.push(String(url)); return url.includes('/account') ? json({labels:[]}) : json({});});

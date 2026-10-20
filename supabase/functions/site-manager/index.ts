@@ -78,7 +78,14 @@ Deno.serve(async req => {
     async function configurePublisher(candidate: unknown) {
       if (typeof candidate !== "string" || candidate.length < 20 || candidate.length > 500 || /[\r\n]/.test(candidate)) fail("Invalid GitHub token");
       const prior = activeToken; activeToken = candidate;
-      try { const check = await gh(""); if (check?.permissions?.push !== true) fail("GitHub token needs push access to the configured repository", 403); }
+      try {
+        const check = await gh("");
+        if (check?.permissions?.push !== true) fail("GitHub token needs push access to the configured repository", 403);
+        // Repository permissions describe the user, not the token's fine-grained grant.
+        // An unreferenced blob proves actual Contents write access without touching files or branches.
+        try { await gh("/git/blobs", "POST", { content: "Portfolio Sites Manager publisher capability check. No file or branch update.", encoding: "utf-8" }); }
+        catch { fail("GitHub rejected Contents write access. Use a repository-scoped token with Contents: Read and write, and any required owner approval.", 403); }
+      }
       catch (e) { activeToken = prior; throw e; }
       const sealed = encryptToken(candidate);
       await db("site_manager_secrets?on_conflict=id", "POST", { id: "github_publisher", ...sealed }, "resolution=merge-duplicates,return=minimal");
