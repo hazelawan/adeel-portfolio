@@ -1,0 +1,56 @@
+/* App installation and sign-in presentation; no portfolio selectors. */
+.auth-wrap { grid-template-columns:minmax(0, 1fr) minmax(0, 440px); gap:80px; padding:90px max(6vw,24px); max-width:1440px; margin:auto; align-content:center; }
+.auth-intro { max-width:600px; justify-self:end; }
+.studio-tag { display:inline-flex; align-items:center; gap:12px; color:var(--muted); font:600 11px/1.5 ui-monospace,monospace; letter-spacing:.14em; }
+.auth-intro h2 { font:650 clamp(38px,4.8vw,68px)/1.08 system-ui,sans-serif; letter-spacing:-.065em; margin:32px 0 24px; }
+.auth-intro h2>span { color:var(--green); }
+.auth-intro>p { max-width:410px; font-size:15px; line-height:1.8; color:var(--muted); }
+.intro-features { display:grid; gap:16px; margin:34px 0; }
+.intro-features span { display:flex; gap:20px; color:var(--green); font:11px ui-monospace,monospace; }
+.intro-features b { color:var(--text); font:500 13px system-ui,sans-serif; }
+.auth-intro>small { display:block; margin-top:24px; color:var(--muted); font:9px/1.7 ui-monospace,monospace; letter-spacing:.12em; }
+.sidebar-install { grid-column:1/-1; margin-top:18px; padding:12px; min-height:44px; border:1px solid var(--line); border-radius:10px; color:var(--text); background:var(--panel2); font-size:12px; text-align:left; }
+.install-dialog { width:min(440px,calc(100% - 32px)); max-height:calc(100svh - 40px); overflow:auto; padding:28px; color:var(--text); background:var(--panel); border:1px solid var(--line); border-radius:24px; box-shadow:0 30px 100px #0006; }
+.install-dialog::backdrop { background:#07140fc9; backdrop-filter:blur(5px); }
+.install-dialog-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; }
+.install-dialog h2 { font:650 30px/1.15 system-ui,sans-serif; letter-spacing:-.045em; margin:14px 0 18px; }
+.install-dialog p,.install-dialog li { font-size:14px; line-height:1.7; }
+.install-dialog p { color:var(--muted); }
+.install-dialog ol { padding-left:22px; margin:20px 0; }
+.install-dialog li { padding:6px 0 6px 6px; }
+.install-dialog .install-note { font-size:12px; padding-top:16px; border-top:1px solid var(--line); }
+.install-dialog .mini { min-height:44px; }
+.connection-banner { position:fixed; top:0; left:0; right:0; z-index:50; margin:0; padding:12px 20px; background:#f5d487; color:#34250a; text-align:center; font-size:13px; box-shadow:0 4px 18px #0003; }
+@media (max-width:1000px) { .auth-wrap { gap:40px; } .auth-intro h2 { font-size:46px; } }
+@media (max-width:760px) {
+  .auth-wrap { grid-template-columns:minmax(0,1fr); gap:30px; padding:88px 20px 36px; }
+  .auth-intro { justify-self:center; width:min(440px,100%); }
+  .auth-intro h2 { font-size:40px; margin:18px 0 14px; }
+  .auth-intro h2 br { display:none; }
+  .auth-intro h2 br::after { content:' '; }
+  .auth-intro h2>span { display:block; }
+  .auth-intro>p { font-size:14px; margin-bottom:18px; }
+  .intro-features,.auth-intro>small { display:none; }
+  .auth-card { justify-self:center; width:min(440px,100%); }
+  .sidebar-foot .sidebar-install { display:inline-flex; margin:0; min-height:44px; align-items:center; font-size:11px; }
+}
+@media (display-mode:standalone) {
+  .auth-wrap { padding-top:max(70px,env(safe-area-inset-top)); }
+  .auth-theme-control { top:max(16px,env(safe-area-inset-top)); }
+  .page-footer { padding-bottom:max(24px,env(safe-area-inset-bottom)); }
+}
+
+@media (max-width:680px) {
+  .sidebar-foot>.live-dot,.sidebar-foot>span:not(.live-dot) { display:none; }
+  .sidebar-foot { justify-content:space-between; }
+  .topbar { position:static; }
+  .auth-intro h2 { font-size:34px; }
+  .auth-intro>p { margin:10px 0 16px; line-height:1.6; }
+  .auth-wrap { padding-top:76px; gap:24px; }
+  .mini,.entry-actions .mini,.media-actions button,.site-actions .button,.filter,.logout,.admin-theme-toggle { min-height:44px; }
+  .message-actions { flex-wrap:wrap; }
+  .object-array-row { min-width:0; flex-wrap:wrap; }
+  .object-array-fields { min-width:0; width:100%; }
+  .control,.array-row,.entry-fields>div,.site-card,.site-box { min-width:0; }
+  .array-row input { min-width:0; }
+}
