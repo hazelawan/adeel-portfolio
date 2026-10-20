@@ -1,4 +1,4 @@
-import { initSitesManager } from './sites-manager.js';
+import { initSitesManager } from './sites-manager.js?v=20261020-session';
 import { config, isConfigured, request, getContent, saveContent, listMessages, updateMessage, deleteMessage, uploadMedia, listMedia, fileUrl, deleteMedia, login, currentUser, logout, requestPasswordRecovery, completePasswordRecovery } from './appwrite-client.js';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const authView=$('#auth-view'),appView=$('#app-view'); let content=null,messages=[],media=[],tab='overview',filter='all',toastTimer,dirty=false;

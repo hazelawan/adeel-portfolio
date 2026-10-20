@@ -15,7 +15,30 @@ function message(t,error=false){notice=t;noticeError=error;const n=root?.querySe
 function safePath(v){const p=String(v);if(!p||p.length>240||p.startsWith('/')||p.includes('\\')||p.includes(':')||/[\u0000-\u001f\u007f]/.test(p))throw Error(`Unsafe relative file path: ${p}`);const a=p.split('/');if(a.some(x=>!x||x==='.'||x==='..'||x.startsWith('.')||x.toLowerCase()==='node_modules'))throw Error(`Hidden, reserved, or invalid file path: ${p}`);if(p.toLowerCase()==='cue-site.json')throw Error('cue-site.json is reserved.');return a.join('/');}
 function validatePaths(paths){const low=paths.map(p=>p.toLowerCase());if(new Set(low).size!==low.length)throw Error('File paths must be unique, including case-insensitive matches.');for(let i=0;i<low.length;i++)for(let j=0;j<low.length;j++)if(i!==j&&low[j].startsWith(low[i]+'/'))throw Error(`File/folder path conflict: ${paths[i]}`);}
 function unpack(files){const raw=[...files].map(file=>({file,path:safePath(file.webkitRelativePath||file.name)}));const roots=raw.map(x=>x.path.split('/')[0]);const common=raw.length&&raw.every(x=>(x.file.webkitRelativePath||'').includes('/')&&x.path.split('/')[0]===roots[0])?roots[0]:'';return raw.map(x=>({file:x.file,path:safePath(common?x.path.slice(common.length+1):x.path)}));}
-async function backend(action,params={}){const user=await currentUser();if(!user?.labels?.includes('portfolioAdmin'))throw Error('Administrator access is required. Sign in with a portfolioAdmin account.');const settings=await fetch('./sites-config.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Sites service configuration is unavailable. Ask the administrator to check sites-config.json.');return r.json();});if(settings.enabled!==true||!/^https:\/\//.test(settings.endpoint||''))throw Error('Sites service is disabled or its HTTPS endpoint is not configured.');if(!config.endpoint||!config.projectId)throw Error('Appwrite authentication is not configured.');let jwt;try{jwt=(await new Account(new Client().setEndpoint(config.endpoint).setProject(config.projectId)).createJWT()).jwt;}catch(e){throw Error(`Could not create an Appwrite session JWT (${e?.message||'session expired'}). Sign in again and retry.`);}let response;try{response=await fetch(settings.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action,jwt,...params})});}catch(e){throw Error(`Sites service request failed: ${e?.message||'network error'}`);}let result;try{result=await response.json();}catch{throw Error(`Sites service returned a non-JSON response (HTTP ${response.status}).`);}if(!response.ok||result.ok!==true)throw Error(result.error||`Sites service rejected the request (HTTP ${response.status}).`);return result;}
+let sessionToken={userId:'',jwt:'',expires:0};
+async function sessionJWT(userId,force=false){
+  if(!force&&sessionToken.userId===userId&&sessionToken.expires>Date.now())return sessionToken.jwt;
+  try{
+    const {jwt}=await new Account(new Client().setEndpoint(config.endpoint).setProject(config.projectId)).createJWT();
+    // Short-lived Appwrite session JWT only, retained in memory for five minutes.
+    // This is never the GitHub publisher token, which remains on the server.
+    sessionToken={userId,jwt,expires:Date.now()+5*60*1000};return jwt;
+  }catch(e){sessionToken={userId:'',jwt:'',expires:0};throw Error(`Could not create an Appwrite session JWT (${e?.message||'session expired'}). Sign in again and retry.`);}
+}
+async function backend(action,params={}){
+  const user=await currentUser();if(!user?.labels?.includes('portfolioAdmin'))throw Error('Administrator access is required. Sign in with a portfolioAdmin account.');
+  const settings=await fetch('./sites-config.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Sites service configuration is unavailable. Ask the administrator to check sites-config.json.');return r.json();});
+  if(settings.enabled!==true||!/^https:\/\//.test(settings.endpoint||''))throw Error('Sites service is disabled or its HTTPS endpoint is not configured.');
+  if(!config.endpoint||!config.projectId)throw Error('Appwrite authentication is not configured.');
+  for(let attempt=0;attempt<2;attempt++){
+    const jwt=await sessionJWT(user.$id,attempt===1);let response;
+    try{response=await fetch(settings.endpoint,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action,jwt,...params})});}catch(e){throw Error(`Sites service request failed: ${e?.message||'network error'}`);}
+    // A 401 is returned before any mutation; retry once with a fresh session JWT.
+    if(response.status===401&&attempt===0){sessionToken={userId:'',jwt:'',expires:0};continue;}
+    let result;try{result=await response.json();}catch{throw Error(`Sites service returned a non-JSON response (HTTP ${response.status}).`);}
+    if(!response.ok||result.ok!==true)throw Error(result.error||`Sites service rejected the request (HTTP ${response.status}).`);return result;
+  }
+}
 const lockable=s=>s.status==='draft';
 const urlFor=s=>`https://hazelawan.github.io/adeel-portfolio/sites/${encodeURIComponent(s.slug)}/`;
 async function refresh(silent=false,allowBusy=false){if(busy&&!allowBusy)return;const wasBusy=busy;busy=true;render();if(!silent)message('Loading site catalog…');try{const r=await backend('list');sites=Array.isArray(r.sites)?r.sites:[];if(!silent)message(`Loaded ${sites.length} site${sites.length===1?'':'s'}.`);}catch(e){message(e.message||'Could not load the site catalog.',true);}finally{busy=wasBusy;render();}}
