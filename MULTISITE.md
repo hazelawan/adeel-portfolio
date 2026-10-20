@@ -47,3 +47,16 @@ Writes are restricted to the selected new `sites/<slug>/` folder. Existing targe
 Run `node --test tests/frontend-zip.test.mjs tests/supabase-sites.test.mjs` and `git diff --check`. ZIP tests include Python `zipfile` interoperability. Mocked backend tests do not replace a real new-project import/duplicate/edit/publish/live-marker test.
 
 Deployment status is reported separately. This source guide is not evidence that the new manager is live.
+
+## Backend provisioned
+
+The separate **Portfolio Sites Manager** project is now active in **Wanhar tech** on its Free plan, with a quoted new-project cost of **$0/month**. Project ref: `oesyrfvptnazuvbmpmyx`; region: `ap-south-1`.
+
+- Dashboard: https://supabase.com/dashboard/project/oesyrfvptnazuvbmpmyx
+- Edge endpoint: https://oesyrfvptnazuvbmpmyx.supabase.co/functions/v1/site-manager
+- Migration applied: `create_private_sites_catalog`.
+- Active function version 1 bundles the implementation pinned to Git commit `4ca17d7e378b659b66e5a7aa1cab10707506d84d`.
+- Real checks passed: owner login and `portfolioAdmin` authentication, empty catalog read, draft creation, independent duplication, duplicate-slug rejection, missing-publisher-token rejection, anonymous table-read denial, unknown-origin denial and allowed-origin preflight.
+- Both temporary catalog test records and the temporary verification login session were removed. The catalog and credential table are empty.
+
+1HourMart was not changed. The live GitHub `main` branch and portfolio were not changed. The feature branch stores the new endpoint, but `sites-config.json` remains disabled until a durable repository-scoped GitHub credential is installed and a real import/edit/duplicate/publish/live-marker check passes. Then enable the setting and merge the tested feature branch into `main`.

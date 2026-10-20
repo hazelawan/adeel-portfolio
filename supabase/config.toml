@@ -1,0 +1,8 @@
+project_id = "portfolio-sites-manager"
+
+# Deploy only to project ref oesyrfvptnazuvbmpmyx, never an existing project.
+# Every application request is authenticated inside the function using an
+# Appwrite JWT and the portfolioAdmin label; Supabase Auth JWT is not used.
+[functions.site-manager]
+verify_jwt = false
+entrypoint = "./functions/site-manager/index.ts"

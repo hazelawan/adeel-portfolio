@@ -1,6 +1,6 @@
 {
   "enabled": false,
-  "endpoint": "",
+  "endpoint": "https://oesyrfvptnazuvbmpmyx.supabase.co/functions/v1/site-manager",
   "repository": "hazelawan/adeel-portfolio",
   "sitesBaseUrl": "https://hazelawan.github.io/adeel-portfolio/sites/"
 }
