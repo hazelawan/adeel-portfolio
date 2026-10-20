@@ -74,3 +74,13 @@ The admin now opens on Sites. The original **Adeel Portfolio** has its own clear
 **Duplicate** on the original uses the existing standalone portfolio-copy operation, including local content and assets. Duplicate on another site creates its own independent draft. Each copy appears in the site list. New copies use unused slugs; original and existing published folders remain protected from overwrite. No demo copy is created automatically.
 
 Published sites remain immutable; duplicate to a new slug for changes. Arbitrary uploaded sites use the file editor; portfolio copies also have guided details through `site-content.json`.
+
+## Admin appearance and website themes
+
+The **Admin dark mode** switch changes only the admin panel and login screen. Its light/dark selection is saved in this browser as `wanhar-admin-theme`, survives reload/sign-out, and synchronizes across tabs. The initial appearance follows the device preference when no selection has been saved. If browser storage is disabled, switching still works for the current page.
+
+New copies created from the original portfolio include an opt-in website theme adapter. Open a draft's files and details, choose **Website color mode** (Dark, Light or System) and **Website accent color** (Gold, Emerald, Blue or Rose), then choose **Save website theme**. This updates only that draft's `site-theme.json`; publish the new folder to make it live. Published websites remain immutable: duplicate one to change its theme. Admin appearance and website appearance are independent. System mode follows each visitor's device preference.
+
+Imported websites keep their original HTML/CSS unchanged. Theme controls appear only for the supported `wanhar-portfolio-v1` adapter: root `site-theme.json`, `site-theme.js`, `site-theme.css`, and an `index.html` that explicitly declares `<meta name="cue-site-theme" content="wanhar-portfolio-v1">` and links the local `./site-theme.css` stylesheet and deferred `./site-theme.js` script. The configuration is exactly `{"version":1,"adapter":"wanhar-portfolio-v1","mode":"dark","accent":"gold"}` with the supported mode/accent choices above. Invalid/unsupported settings leave existing styling alone. The manager never rewrites arbitrary imported CSS or applies a theme to the original live portfolio.
+
+Existing portfolio drafts created before this feature are not silently converted; create a fresh independent copy of the original portfolio to get the supported theme files. Theme configuration and runtime assets are included in ZIP exports.

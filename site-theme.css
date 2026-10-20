@@ -1,0 +1,67 @@
+/* Opt-in Wanhar portfolio theme adaptations; original stylesheet remains authoritative. */
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme][data-site-accent] {
+  --theme-accent: var(--gold);
+}
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-accent="gold"] { --theme-accent:#e8bd52; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-accent="emerald"] { --theme-accent:#5bbf91; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-accent="blue"] { --theme-accent:#74a9ed; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-accent="rose"] { --theme-accent:#e58aa4; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme][data-site-accent] {
+  --gold:var(--theme-accent);
+}
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] {
+  --bg:#f5f1e8; --fg:#24251f; --muted:#696b62; --line:#d8d3c6; --cream:#fffdf7; --panel:#ebe6da;
+  color-scheme:light;
+}
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] body { background:var(--bg); color:var(--fg); }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] header { border-bottom-color:#29291a1a; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] nav { color:#55574f; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hire { border-color:#55574f66; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hero-shade {
+  background:linear-gradient(90deg,#f5f1e8f2 0%,#f5f1e8d9 38%,#f5f1e866 66%,#f5f1e800 88%),linear-gradient(0deg,#f5f1e8 0%,#f5f1e800 24%);
+}
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .intro-copy { color:#45473f; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .introduce { border-color:#77796e; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .primary,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .project-open { background:#24251f; color:#fffdf7; border-color:#24251f; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .ticker { background:#ebe6da; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .ticker div { color:#55574f; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .underlink { color:#34362f; border-color:#858578; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .work-section { background:#e9e4d9; border-block-color:#d8d3c6; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .project-media { background:#d8d2c4; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hero-bottom>a { color:#46483f; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hero-bottom p>span { color:#686a5f; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .avatar-label { text-shadow:0 1px 5px #fff9; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .avatar-label small { color:#42443b; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .sound { background:#f5f1e8e8; color:#24251f; border-color:#76776688; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] dialog { background:#fffdf7; color:#24251f; border-color:#aaa595; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] dialog::backdrop { background:#25251fcc; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .contact { background:radial-gradient(ellipse at right bottom,#a59b3418,transparent 65%); }
+@media(max-width:760px) {
+  :root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] header { background:#f5f1e8d9; }
+  :root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] nav { background:#fffdf7f5; }
+  :root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hero-shade { background:linear-gradient(180deg,#f5f1e8 0%,#f5f1e866 55%,#f5f1e8 100%); }
+  :root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hero-bottom { background:#f5f1e8; }
+  :root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .menu { border-color:#24251f44; }
+}
+
+/* Light-mode contrasts for the known portfolio adapter only. */
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"][data-site-accent="gold"] { --theme-accent:#876315; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"][data-site-accent="emerald"] { --theme-accent:#216a4a; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"][data-site-accent="blue"] { --theme-accent:#2b5c99; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"][data-site-accent="rose"] { --theme-accent:#9d3856; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .project,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .steps article { background:var(--cream);border-color:var(--line); }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .introduce { background:#fffdf7e8; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .brand small,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .scroll-link,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .service .arrow { color:#55594e; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .hero-note span { color:#696b62!important; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .steps article>span { color:#858578; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .outline,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .pill-link,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .dialog-head button { border-color:#77796b77; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .play,
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .monogram { color:#fffdf7; }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .project-cta { background:color-mix(in srgb,var(--theme-accent) 20%,#fffdf7);border-color:var(--theme-accent); }
+:root[data-site-adapter="wanhar-portfolio-v1"][data-site-theme="light"] .project-cta-signature { color:#f4f4e9; }
