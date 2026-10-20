@@ -55,8 +55,12 @@ The separate **Portfolio Sites Manager** project is now active in **Wanhar tech*
 - Dashboard: https://supabase.com/dashboard/project/oesyrfvptnazuvbmpmyx
 - Edge endpoint: https://oesyrfvptnazuvbmpmyx.supabase.co/functions/v1/site-manager
 - Migration applied: `create_private_sites_catalog`.
-- Active function version 1 bundles the implementation pinned to Git commit `4ca17d7e378b659b66e5a7aa1cab10707506d84d`.
-- Real checks passed: owner login and `portfolioAdmin` authentication, empty catalog read, draft creation, independent duplication, duplicate-slug rejection, missing-publisher-token rejection, anonymous table-read denial, unknown-origin denial and allowed-origin preflight.
-- Both temporary catalog test records and the temporary verification login session were removed. The catalog and credential table are empty.
+- Active function version 2 bundles the implementation pinned to Git commit `497e3c8c05cfc4e6ca7645340a71c4d7f0b4b0d5`. Publisher setup proves actual token Contents write access before encrypting it in service-role-only storage.
+- Real checks passed: owner authentication, independent draft duplication, edited content with original-source preservation, new-file addition, unique-folder atomic publication, matching public marker, live HTML/JSON/CSS/JS, and repeat publish without a new commit. Anonymous table access and unknown origins are denied.
+- The ready **Adeel Portfolio template** draft has 33 files, including local content data and all assets. It is disconnected from the original portfolio's Appwrite content and inbox.
 
-1HourMart was not changed. The live GitHub `main` branch and portfolio were not changed. The feature branch stores the new endpoint, but `sites-config.json` remains disabled until a durable repository-scoped GitHub credential is installed and a real import/edit/duplicate/publish/live-marker check passes. Then enable the setting and merge the tested feature branch into `main`.
+The verified example is live at https://hazelawan.github.io/adeel-portfolio/sites/manager-check-c51dcac4c9/ . Temporary unpublished import-source drafts and verification login sessions were removed; the published example remains intact. The production endpoint is enabled in `sites-config.json` after the successful real test.
+
+Open https://hazelawan.github.io/adeel-portfolio/admin.html and choose **Sites**. Duplicate **Adeel Portfolio template**, choose a new name/slug, edit **site-content.json** through **Edit site content**, save and publish. Published copies are immutable: duplicate them for another version. ZIP export retains all files and nested assets.
+
+1HourMart, original Appwrite content/media/inbox configuration, and the original public portfolio files were not changed. Only the admin integration, new multi-site implementation/configuration, documentation/tests and the new verification-site folder are added or updated on `main` as part of rollout. No token is stored in GitHub files, browser code or response logs.
